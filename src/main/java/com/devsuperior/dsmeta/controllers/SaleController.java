@@ -1,14 +1,17 @@
 package com.devsuperior.dsmeta.controllers;
 
+import com.devsuperior.dsmeta.dto.SummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.services.SaleService;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/sales")
@@ -30,8 +33,25 @@ public class SaleController {
 	}
 
 	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
+	public ResponseEntity<List<SummaryDTO>> getSummary(
+			@RequestParam(name = "minDate", defaultValue = "") String minDate,
+			@RequestParam(name = "maxDate", defaultValue = "")  String maxDate) {
+
+		LocalDate max;
+		LocalDate min;
+
+		if (maxDate.isBlank()) {
+			max = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
+		} else {
+			max = LocalDate.parse(maxDate);
+		}
+
+		if (minDate.isBlank()) {
+			min = max.minusYears(1L);
+		} else {
+			min = LocalDate.parse(minDate);
+		}
+
+		return ResponseEntity.ok(service.searchSellerNameAndTotal(min, max));
 	}
 }

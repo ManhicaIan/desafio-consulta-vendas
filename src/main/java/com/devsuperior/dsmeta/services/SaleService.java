@@ -1,7 +1,10 @@
 package com.devsuperior.dsmeta.services;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import com.devsuperior.dsmeta.dto.SummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +22,9 @@ public class SaleService {
 		Optional<Sale> result = repository.findById(id);
 		Sale entity = result.get();
 		return new SaleMinDTO(entity);
+	}
+
+	public List<SummaryDTO> searchSellerNameAndTotal(LocalDate minDate, LocalDate maxDate) {
+        return repository.searchSellerNameAndTotal(minDate, maxDate);
 	}
 }
