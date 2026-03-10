@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.devsuperior.dsmeta.dto.ReportDTO;
 import com.devsuperior.dsmeta.dto.SummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,4 +28,10 @@ public class SaleService {
 	public List<SummaryDTO> searchSellerNameAndTotal(LocalDate minDate, LocalDate maxDate) {
         return repository.searchSellerNameAndTotal(minDate, maxDate);
 	}
+
+	public List<ReportDTO> showSellReportByDate(LocalDate minDate, LocalDate maxDate, String name) {
+		return repository.showSellReportByDate(minDate, maxDate, name);
+	}
+
+
 }
